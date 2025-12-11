@@ -15,6 +15,15 @@ const firebaseConfig = {
   appId: process.env.REACT_APP_FIREBASE_APP_ID || '1:123456789:web:abcdef',
 };
 
+// DEBUG: Логирование для проверки
+if (typeof window !== 'undefined') {
+  console.log('🔐 Firebase Config:', {
+    apiKey: process.env.REACT_APP_FIREBASE_API_KEY ? '✓ SET' : '✗ NOT SET',
+    authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN ? '✓ SET' : '✗ NOT SET',
+    projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID ? '✓ SET' : '✗ NOT SET',
+  });
+}
+
 // Проверка конфигурации
 const isConfigured =
   process.env.REACT_APP_FIREBASE_API_KEY &&
