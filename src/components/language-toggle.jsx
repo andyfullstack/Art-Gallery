@@ -19,7 +19,7 @@ export function LanguageToggle() {
   useEffect(() => {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsOpen(false);
+        setIsOpen(true);
       }
     }
 
