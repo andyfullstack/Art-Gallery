@@ -18,9 +18,10 @@ const firebaseConfig = {
 // DEBUG: Логирование для проверки
 if (typeof window !== 'undefined') {
   console.log('🔐 Firebase Config:', {
-    apiKey: process.env.REACT_APP_FIREBASE_API_KEY ? '✓ SET' : '✗ NOT SET',
-    authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN ? '✓ SET' : '✗ NOT SET',
-    projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID ? '✓ SET' : '✗ NOT SET',
+    apiKey: firebaseConfig.apiKey ? '✓ SET' : '✗ NOT SET',
+    authDomain: firebaseConfig.authDomain ? '✓ SET' : '✗ NOT SET',
+    projectId: firebaseConfig.projectId ? '✓ SET' : '✗ NOT SET',
+    actualAuthDomain: firebaseConfig.authDomain,
   });
 }
 
