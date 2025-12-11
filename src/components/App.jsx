@@ -108,7 +108,6 @@ export function App() {
           onAuthClick={() => setIsAuthOpen(true)}
           onProfileClick={() => {
             setIsProfileOpen(true);
-            setIsCheckoutOpen(true);
           }}
           cartItemsCount={cartItemsCount}
         />
@@ -146,15 +145,15 @@ export function App() {
 
         <AuthModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
 
-        {isProfileOpen && (
-          <UserProfile
-            cart={cart}
-            onClose={() => setIsProfileOpen(false)}
-            onCheckout={() => {
-              setIsCheckoutOpen(true);
-            }}
-          />
-        )}
+        <UserProfile
+          isOpen={isProfileOpen}
+          cart={cart}
+          onClose={() => setIsProfileOpen(false)}
+          onCheckout={() => {
+            setIsCheckoutOpen(true);
+            setIsProfileOpen(false);
+          }}
+        />
 
         <CheckoutModal
           isOpen={isCheckoutOpen}

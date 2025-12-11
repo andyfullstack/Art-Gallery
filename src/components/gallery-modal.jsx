@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { useLanguage } from '../contexts/language-context';
@@ -13,6 +13,7 @@ export function GalleryModal({
   const { t } = useLanguage();
   const [activeIndex, setActiveIndex] = useState(currentIndex ?? 0);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const containerRef = useRef(null);
 
   useEffect(() => {
     if (isOpen) {
@@ -20,6 +21,26 @@ export function GalleryModal({
       setSelectedImageIndex(0);
     }
   }, [currentIndex, isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const container = containerRef.current;
+    if (!container) return;
+
+    const handleWheelEvent = e => {
+      e.preventDefault();
+      if (e.deltaY > 0) {
+        setActiveIndex(prev => (prev === artworks.length - 1 ? 0 : prev + 1));
+      } else if (e.deltaY < 0) {
+        setActiveIndex(prev => (prev === 0 ? artworks.length - 1 : prev - 1));
+      }
+      setSelectedImageIndex(0);
+    };
+
+    container.addEventListener('wheel', handleWheelEvent, { passive: false });
+    return () => container.removeEventListener('wheel', handleWheelEvent);
+  }, [artworks.length, isOpen]);
 
   if (!isOpen) return null;
 
@@ -54,8 +75,18 @@ export function GalleryModal({
     onClose();
   };
 
+  const handleBackdropClick = e => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
   return (
-    <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-2 md:p-4 overflow-y-auto">
+    <div
+      ref={containerRef}
+      className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-2 md:p-4 overflow-y-auto"
+      onClick={handleBackdropClick}
+    >
       <div className="relative bg-background w-full max-w-5xl max-h-[95vh] md:max-h-[90vh] overflow-y-auto rounded-lg shadow-2xl my-auto">
         <button
           onClick={onClose}

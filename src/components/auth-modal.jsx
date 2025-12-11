@@ -134,8 +134,17 @@ export function AuthModal({ isOpen, onClose }) {
     }
   };
 
+  const handleBackdropClick = e => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
   return (
-    <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4">
+    <div
+      className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4"
+      onClick={handleBackdropClick}
+    >
       <div className="relative bg-background w-full max-w-md rounded-lg shadow-2xl my-auto max-h-[95vh] overflow-y-auto">
         <button
           onClick={onClose}

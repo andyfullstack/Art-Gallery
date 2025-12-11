@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { useLanguage } from '../contexts/language-context';
@@ -28,6 +28,28 @@ export function FeaturedArtwork({ onAddToCart } = {}) {
   const [selectedImage, setSelectedImage] = useState(null);
   const [viewMode, setViewMode] = useState(0); // 0: original, 1: variant1, 2: variant2
   const [isScaled, setIsScaled] = useState(false);
+  const modalRef = useRef(null);
+
+  useEffect(() => {
+    if (!selectedImage) return;
+
+    const modal = modalRef.current;
+    if (!modal) return;
+
+    const handleWheelEvent = e => {
+      e.preventDefault();
+      if (e.deltaY > 0) {
+        setViewMode(prev => (prev + 1) % 3);
+      } else if (e.deltaY < 0) {
+        setViewMode(prev => (prev - 1 + 3) % 3);
+      }
+      setIsScaled(true);
+      setTimeout(() => setIsScaled(false), 300);
+    };
+
+    modal.addEventListener('wheel', handleWheelEvent, { passive: false });
+    return () => modal.removeEventListener('wheel', handleWheelEvent);
+  }, [selectedImage]);
 
   const handleAddFromFeatured = item => {
     if (!onAddToCart) return;
@@ -139,6 +161,7 @@ export function FeaturedArtwork({ onAddToCart } = {}) {
 
       {selectedImage && (
         <div
+          ref={modalRef}
           className="fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-4"
           onClick={() => setSelectedImage(null)}
         >
