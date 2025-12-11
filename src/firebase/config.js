@@ -5,13 +5,10 @@ import { getAuth, GoogleAuthProvider } from 'firebase/auth';
 // Создайте файл .env.local и заполните значения (см. .env.example)
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY || 'AIzaSyBslNP5qKeHKEsLqPY3WClqQ3Jd9OENpk4',
-  authDomain:
-    process.env.REACT_APP_FIREBASE_AUTH_DOMAIN || 'gallery-94c7a.firebaseapp.com',
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN || 'gallery-94c7a.firebaseapp.com',
   projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID || 'gallery-94c7a',
-  storageBucket:
-    process.env.REACT_APP_FIREBASE_STORAGE_BUCKET || 'gallery-94c7a.firebasestorage.app',
-  messagingSenderId:
-    process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID || '554228724926',
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET || 'gallery-94c7a.firebasestorage.app',
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID || '554228724926',
   appId: process.env.REACT_APP_FIREBASE_APP_ID || '1:554228724926:web:24cae1078809a63a31daef',
 };
 
