@@ -1,0 +1,147 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-size: 16px;
+  --background: #faf8f6;
+  --foreground: #3a3a3a;
+  --card: #ffffff;
+  --card-foreground: #3a3a3a;
+  --popover: #ffffff;
+  --popover-foreground: #3a3a3a;
+  --primary: #8b9d9a;
+  --primary-foreground: #ffffff;
+  --secondary: #e8d5c4;
+  --secondary-foreground: #3a3a3a;
+  --muted: #f0ebe5;
+  --muted-foreground: #7a7a7a;
+  --accent: #c9a98c;
+  --accent-foreground: #ffffff;
+  --destructive: #d4183d;
+  --destructive-foreground: #ffffff;
+  --border: rgba(139, 157, 154, 0.12);
+  --input: transparent;
+  --ring: #c9a98c;
+  --radius: 0.5rem;
+}
+
+.dark {
+  --background: #1c1c1e;
+  --foreground: #f0ebe5;
+  --card: #2a2a2c;
+  --card-foreground: #f0ebe5;
+  --popover: #2a2a2c;
+  --popover-foreground: #f0ebe5;
+  --primary: #c9a98c;
+  --primary-foreground: #1c1c1e;
+  --secondary: #3a3a3c;
+  --secondary-foreground: #e8d5c4;
+  --muted: #3a3a3c;
+  --muted-foreground: #b8b0a8;
+  --accent: #8b9d9a;
+  --accent-foreground: #f0ebe5;
+  --destructive: #d4183d;
+  --destructive-foreground: #ffffff;
+  --border: rgba(201, 169, 140, 0.15);
+  --input: rgba(255, 255, 255, 0.08);
+  --ring: #c9a98c;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+
+  html {
+    font-size: var(--font-size);
+    scroll-behavior: smooth;
+  }
+}
+
+@layer utilities {
+  .scroll-animate {
+    opacity: 0;
+    transform: translateY(60px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  }
+
+  .scroll-animate.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(60px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fade-in-scale {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .animate-fade-in {
+    animation: fade-in 1s ease-out;
+  }
+
+  @media (max-width: 768px) {
+    .scroll-animate {
+      transform: translateY(30px);
+    }
+
+    @keyframes fade-in-up {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  }
+
+  @media (hover: none) and (pointer: coarse) {
+    * {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button,
+    a {
+      cursor: pointer;
+      -webkit-touch-callout: none;
+    }
+  }
+}
