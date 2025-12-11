@@ -1,5 +1,5 @@
 import { ShoppingCart, Menu, X, User, LogOut } from 'lucide-react';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { ThemeToggle } from './theme-toggle';
 import { LanguageToggle } from './language-toggle';
 import { useLanguage } from '../contexts/language-context';
@@ -19,15 +19,18 @@ export function Header({
   const userMenuRef = useRef(null);
 
   // Тоны для секций: светлый фон -> медный текст, темный фон -> белый текст
-  const sectionToneMap = {
-    hero: 'dark',
-    featured: 'light',
-    gallery: 'light',
-    categories: 'light',
-    about: 'light',
-    footer: 'dark',
-  };
-  const sectionIds = Object.keys(sectionToneMap);
+  const sectionToneMap = useMemo(
+    () => ({
+      hero: 'dark',
+      featured: 'light',
+      gallery: 'light',
+      categories: 'light',
+      about: 'light',
+      footer: 'dark',
+    }),
+    []
+  );
+  const sectionIds = useMemo(() => Object.keys(sectionToneMap), [sectionToneMap]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -62,7 +65,7 @@ export function Header({
     elements.forEach(el => observer.observe(el));
 
     return () => observer.disconnect();
-  }, []);
+  }, [sectionIds, sectionToneMap]);
 
   // Закрытие меню при клике вне его
   useEffect(() => {
