@@ -24,6 +24,10 @@ jobs:
             ${{ secrets.REACT_APP_FIREBASE_MESSAGING_SENDER_ID }}
           REACT_APP_FIREBASE_APP_ID: ${{ secrets.REACT_APP_FIREBASE_APP_ID }}
         run: |
+          echo "🔐 Checking Firebase Config..."
+          echo "API_KEY: ${REACT_APP_FIREBASE_API_KEY:0:10}..."
+          echo "AUTH_DOMAIN: $REACT_APP_FIREBASE_AUTH_DOMAIN"
+          echo "PROJECT_ID: $REACT_APP_FIREBASE_PROJECT_ID"
           npm install
           npm run lint:js
           npm run build
