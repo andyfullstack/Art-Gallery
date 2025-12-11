@@ -30,7 +30,10 @@ export function Header({
     }),
     []
   );
-  const sectionIds = useMemo(() => Object.keys(sectionToneMap), [sectionToneMap]);
+  const sectionIds = useMemo(
+    () => Object.keys(sectionToneMap),
+    [sectionToneMap]
+  );
 
   useEffect(() => {
     const observer = new IntersectionObserver(
