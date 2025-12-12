@@ -11,6 +11,10 @@ const firebaseConfig = {
 };
 
 console.log('🔐 Firebase Config:', firebaseConfig);
+console.log('🔐 authDomain raw value:', JSON.stringify(firebaseConfig.authDomain));
+console.log('🔐 authDomain type:', typeof firebaseConfig.authDomain);
+console.log('🔐 authDomain length:', firebaseConfig.authDomain?.length);
+console.log('🔐 authDomain === "gallery-94c7a.firebaseapp.com":', firebaseConfig.authDomain === 'gallery-94c7a.firebaseapp.com');
 
 let app;
 let auth;
