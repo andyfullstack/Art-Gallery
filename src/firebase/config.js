@@ -40,6 +40,10 @@ const firebaseConfig = hasCompleteEnvConfig
     }
   : fallbackFirebaseConfig;
 
+// Use a named Firebase app to avoid accidentally reusing a pre-existing [DEFAULT]
+// app that might have been initialized elsewhere with a wrong config.
+const FIREBASE_APP_NAME = 'art-gallery';
+
 // DEBUG: Log env availability (not secrets).
 if (typeof window !== 'undefined') {
   console.log('🔐 Firebase Env:', {
@@ -80,13 +84,19 @@ let auth;
 let googleProvider;
 
 try {
-  app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+  const hasNamedApp = getApps().some(existingApp => existingApp.name === FIREBASE_APP_NAME);
+  app = hasNamedApp
+    ? getApp(FIREBASE_APP_NAME)
+    : initializeApp(firebaseConfig, FIREBASE_APP_NAME);
   auth = getAuth(app);
 
   googleProvider = new GoogleAuthProvider();
   googleProvider.setCustomParameters({ prompt: 'select_account' });
 
-  console.log('Firebase initialized. Auth domain:', auth.app.options.authDomain);
+  console.log('Firebase initialized:', {
+    appName: app.name,
+    authDomain: auth.app.options.authDomain,
+  });
 } catch (error) {
   console.error('Firebase init error:', error);
   auth = null;
