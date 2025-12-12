@@ -2,6 +2,7 @@ import { X } from 'lucide-react';
 import { useState } from 'react';
 import { useLanguage } from '../contexts/language-context';
 import {
+  signInWithPopup,
   signInWithRedirect,
   getRedirectResult,
   createUserWithEmailAndPassword,
@@ -111,13 +112,13 @@ export function AuthModal({ isOpen, onClose }) {
     }
 
     try {
-      // Check for redirect result first
-      const result = await getRedirectResult(auth);
-      if (result?.user) {
-        console.log('Redirect auth success:', result.user);
+      // Check if we're coming back from redirect
+      const redirectResult = await getRedirectResult(auth);
+      if (redirectResult?.user) {
+        console.log('Redirect auth success:', redirectResult.user);
         alert(
           `${t.loginSuccess || 'Успішний вхід!'}\nВітаємо, ${
-            result.user.displayName || result.user.email
+            redirectResult.user.displayName || redirectResult.user.email
           }!`
         );
         onClose();
@@ -125,8 +126,20 @@ export function AuthModal({ isOpen, onClose }) {
         return;
       }
 
-      // Redirect to Google login
-      await signInWithRedirect(auth, googleProvider);
+      // Try popup first (works on localhost and GitHub Pages)
+      console.log('🔐 Starting Google Popup Auth...');
+      console.log('Auth instance:', auth);
+      console.log('Auth app name:', auth.app.name);
+      console.log('Auth config:', auth.app.options);
+      
+      const result = await signInWithPopup(auth, googleProvider);
+      console.log('Google auth success:', result.user);
+      alert(
+        `${t.loginSuccess || 'Успішний вхід!'}\nВітаємо, ${
+          result.user.displayName || result.user.email
+        }!`
+      );
+      onClose();
     } catch (err) {
       console.error('Google auth error:', err);
       if (err.code === 'auth/popup-closed-by-user') {
@@ -135,8 +148,12 @@ export function AuthModal({ isOpen, onClose }) {
         setError(
           'Firebase не налаштовано. Перегляньте FIREBASE_SETUP.md для інструкцій'
         );
-      } else if (err.code === 'auth/operation-not-supported-in-this-environment') {
-        setError('Редирект авторизація не підтримується. Спробуйте Email/Password');
+      } else if (
+        err.code === 'auth/operation-not-supported-in-this-environment'
+      ) {
+        setError(
+          'Редирект авторизація не підтримується. Спробуйте Email/Password'
+        );
       } else {
         setError(err.message || 'Помилка авторизації через Google');
       }
