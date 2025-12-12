@@ -27,6 +27,10 @@ try {
   googleProvider = new GoogleAuthProvider();
   googleProvider.setCustomParameters({ prompt: 'select_account' });
   isConfigured = !!(auth && googleProvider);
+  
+  // Log for debugging
+  console.log('🔐 GoogleAuthProvider created');
+  console.log('Auth app:', auth.app.options);
 } catch (error) {
   console.error('Firebase init error:', error);
   auth = null;
