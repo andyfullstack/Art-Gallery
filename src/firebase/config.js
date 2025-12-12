@@ -15,16 +15,20 @@ console.log('🔐 Firebase Config:', firebaseConfig);
 let app;
 let auth;
 let googleProvider;
+let isConfigured = false;
 
 try {
   app = initializeApp(firebaseConfig);
   auth = getAuth(app);
   googleProvider = new GoogleAuthProvider();
   googleProvider.setCustomParameters({ prompt: 'select_account' });
+  isConfigured = !!(auth && googleProvider);
 } catch (error) {
   console.error('Firebase init error:', error);
   auth = null;
   googleProvider = null;
+  isConfigured = false;
 }
 
-export { auth, googleProvider };
+export { auth, googleProvider, isConfigured };
+
