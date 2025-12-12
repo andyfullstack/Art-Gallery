@@ -3,7 +3,7 @@ import { getAuth, GoogleAuthProvider } from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBslNP5qKeHKEsLqPY3WClqQ3Jd9OENpk4',
-  authDomain: 'gallery-94c7a.firebaseapp.com',
+  authDomain: 'andyfullstack.github.io',
   projectId: 'gallery-94c7a',
   storageBucket: 'gallery-94c7a.firebasestorage.app',
   messagingSenderId: '554228724926',
