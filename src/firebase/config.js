@@ -1,23 +1,31 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider } from 'firebase/auth';
 
-// Конфигурация Firebase из переменных окружения
-// Создайте файл .env.local и заполните значения (см. .env.example)
+// Конфигурация Firebase - всегда используем хардкодные значения
+const fallbackConfig = {
+  apiKey: 'AIzaSyBslNP5qKeHKEsLqPY3WClqQ3Jd9OENpk4',
+  authDomain: 'gallery-94c7a.firebaseapp.com',
+  projectId: 'gallery-94c7a',
+  storageBucket: 'gallery-94c7a.firebasestorage.app',
+  messagingSenderId: '554228724926',
+  appId: '1:554228724926:web:24cae1078809a63a31daef',
+};
+
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY || 'AIzaSyBslNP5qKeHKEsLqPY3WClqQ3Jd9OENpk4',
-  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN || 'gallery-94c7a.firebaseapp.com',
-  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID || 'gallery-94c7a',
-  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET || 'gallery-94c7a.firebasestorage.app',
-  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID || '554228724926',
-  appId: process.env.REACT_APP_FIREBASE_APP_ID || '1:554228724926:web:24cae1078809a63a31daef',
+  apiKey: (process.env.REACT_APP_FIREBASE_API_KEY && process.env.REACT_APP_FIREBASE_API_KEY.trim()) || fallbackConfig.apiKey,
+  authDomain: (process.env.REACT_APP_FIREBASE_AUTH_DOMAIN && process.env.REACT_APP_FIREBASE_AUTH_DOMAIN.trim()) || fallbackConfig.authDomain,
+  projectId: (process.env.REACT_APP_FIREBASE_PROJECT_ID && process.env.REACT_APP_FIREBASE_PROJECT_ID.trim()) || fallbackConfig.projectId,
+  storageBucket: (process.env.REACT_APP_FIREBASE_STORAGE_BUCKET && process.env.REACT_APP_FIREBASE_STORAGE_BUCKET.trim()) || fallbackConfig.storageBucket,
+  messagingSenderId: (process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID && process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID.trim()) || fallbackConfig.messagingSenderId,
+  appId: (process.env.REACT_APP_FIREBASE_APP_ID && process.env.REACT_APP_FIREBASE_APP_ID.trim()) || fallbackConfig.appId,
 };
 
 // DEBUG: Логирование для проверки
 if (typeof window !== 'undefined') {
   console.log('🔐 Firebase Config:', {
-    apiKey: firebaseConfig.apiKey ? '✓ SET' : '✗ NOT SET',
-    authDomain: firebaseConfig.authDomain ? '✓ SET' : '✗ NOT SET',
-    projectId: firebaseConfig.projectId ? '✓ SET' : '✗ NOT SET',
+    apiKey: firebaseConfig.apiKey && firebaseConfig.apiKey !== 'demo-api-key' ? '✓ SET' : '✗ NOT SET',
+    authDomain: firebaseConfig.authDomain && firebaseConfig.authDomain !== 'demo' ? '✓ SET' : '✗ NOT SET',
+    projectId: firebaseConfig.projectId && firebaseConfig.projectId !== 'demo-project' ? '✓ SET' : '✗ NOT SET',
     actualAuthDomain: firebaseConfig.authDomain,
   });
 }
