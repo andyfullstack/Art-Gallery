@@ -7,10 +7,12 @@ const EMOJI_AVATARS = ['😎', '🎨', '🚀', '✨'];
 export function AvatarSelector({ user, onUpdate }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
   const fileInputRef = useRef(null);
 
   const handleEmojiSelect = async emoji => {
     setIsLoading(true);
+    setError('');
     try {
       // Создаем Data URL с эмодзи в виде SVG
       const svgData = `<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">
@@ -41,16 +43,19 @@ export function AvatarSelector({ user, onUpdate }) {
     const file = e.target.files?.[0];
     if (file) {
       if (file.size > 5 * 1024 * 1024) {
-        alert('Фото не должно превышать 5MB');
+        setError('Фото не должно превышать 5MB');
+        e.target.value = '';
         return;
       }
 
       if (!file.type.startsWith('image/')) {
-        alert('Файл должен быть изображением');
+        setError('Файл должен быть изображением');
+        e.target.value = '';
         return;
       }
 
       setIsLoading(true);
+      setError('');
       try {
         const reader = new FileReader();
         reader.onload = async () => {
@@ -69,6 +74,7 @@ export function AvatarSelector({ user, onUpdate }) {
         reader.readAsDataURL(file);
       } finally {
         setIsLoading(false);
+        e.target.value = '';
       }
     }
   };
@@ -78,7 +84,10 @@ export function AvatarSelector({ user, onUpdate }) {
   return (
     <div className="relative">
       <button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => {
+          setIsOpen(!isOpen);
+          setError('');
+        }}
         className="w-8 h-8 sm:w-10 sm:h-10 rounded-full overflow-hidden border-2 border-accent hover:border-primary transition-colors flex items-center justify-center bg-primary text-white font-semibold text-lg"
       >
         {user.photoURL ? (
@@ -94,6 +103,11 @@ export function AvatarSelector({ user, onUpdate }) {
 
       {isOpen && (
         <div className="absolute right-0 mt-2 p-3 bg-background border border-border rounded-lg shadow-lg z-50">
+          {error && (
+            <div className="mb-2 text-xs text-red-700 dark:text-red-300">
+              {error}
+            </div>
+          )}
           <div className="mb-3">
             <p className="text-xs font-semibold text-muted-foreground mb-2">
               Выбрать эмодзи

@@ -53,15 +53,12 @@ export function AuthModal({ isOpen, onClose }) {
             displayName: formData.fullName,
           });
         }
-
-        alert(t.registerSuccess || 'Реєстрація успішна!');
       } else {
         await signInWithEmailAndPassword(
           auth,
           formData.email,
           formData.password
         );
-        alert(t.loginSuccess || 'Успішний вхід!');
       }
 
       onClose();
@@ -118,11 +115,6 @@ export function AuthModal({ isOpen, onClose }) {
 
       const result = await signInWithPopup(auth, googleProvider);
       console.log('Google auth success:', result.user);
-      alert(
-        `${t.loginSuccess || 'Успішний вхід!'}\nВітаємо, ${
-          result.user.displayName || result.user.email
-        }!`
-      );
       onClose();
     } catch (err) {
       console.error('Google auth error:', err);

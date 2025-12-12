@@ -8,13 +8,14 @@ export function ContactForm() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
+  const [status, setStatus] = useState('');
 
   const handleSubmit = e => {
     e.preventDefault();
     setName('');
     setEmail('');
     setMessage('');
-    alert(t?.messageSent || 'Message sent');
+    setStatus(t?.messageSent || 'Message sent');
   };
 
   return (
@@ -56,6 +57,12 @@ export function ContactForm() {
       >
         {t?.send || 'Send'}
       </button>
+
+      {status && (
+        <div className="md:col-span-2 text-sm text-muted-foreground">
+          {status}
+        </div>
+      )}
     </form>
   );
 }
