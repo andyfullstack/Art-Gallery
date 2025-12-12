@@ -1,7 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider } from 'firebase/auth';
 
-// Конфигурация Firebase - хардкодные значения для GitHub Pages
 const firebaseConfig = {
   apiKey: 'AIzaSyBslNP5qKeHKEsLqPY3WClqQ3Jd9OENpk4',
   authDomain: 'gallery-94c7a.firebaseapp.com',
@@ -11,33 +10,8 @@ const firebaseConfig = {
   appId: '1:554228724926:web:24cae1078809a63a31daef',
 };
 
-// DEBUG: Логирование для проверки
-if (typeof window !== 'undefined') {
-  const buildTime = new Date().toISOString();
-  console.log('🔐 Firebase Config (Built: ' + buildTime + '):', {
-    apiKey: firebaseConfig.apiKey ? '✓ SET' : '✗ NOT SET',
-    authDomain: firebaseConfig.authDomain ? '✓ SET' : '✗ NOT SET',
-    projectId: firebaseConfig.projectId ? '✓ SET' : '✗ NOT SET',
-    actualAuthDomain: firebaseConfig.authDomain,
-    configType: typeof firebaseConfig.authDomain,
-    configLength: firebaseConfig.authDomain?.length,
-  });
-}
+console.log('🔐 Firebase Config:', firebaseConfig);
 
-// Проверка конфигурации
-const isConfigured =
-  process.env.REACT_APP_FIREBASE_API_KEY &&
-  process.env.REACT_APP_FIREBASE_API_KEY !== 'demo-api-key';
-
-if (!isConfigured) {
-  console.warn(
-    '⚠️ Firebase не настроен!\n' +
-      'Создайте файл .env.local с вашими Firebase ключами.\n' +
-      'Инструкция: QUICKSTART_AUTH.md'
-  );
-}
-
-// Инициализация Firebase
 let app;
 let auth;
 let googleProvider;
@@ -46,16 +20,11 @@ try {
   app = initializeApp(firebaseConfig);
   auth = getAuth(app);
   googleProvider = new GoogleAuthProvider();
-
-  // Опционально: настройка провайдера
-  googleProvider.setCustomParameters({
-    prompt: 'select_account', // Всегда показывать выбор аккаунта
-  });
+  googleProvider.setCustomParameters({ prompt: 'select_account' });
 } catch (error) {
-  console.error('Firebase initialization error:', error);
-  // Создаем пустые mock объекты для предотвращения ошибок
+  console.error('Firebase init error:', error);
   auth = null;
   googleProvider = null;
 }
 
-export { auth, googleProvider, isConfigured };
+export { auth, googleProvider };
