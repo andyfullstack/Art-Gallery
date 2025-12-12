@@ -23,11 +23,22 @@ const envFirebaseConfig = {
   appId: process.env.REACT_APP_FIREBASE_APP_ID,
 };
 
-// Merge: env overrides fallback when provided.
-const firebaseConfig = {
-  ...fallbackFirebaseConfig,
-  ...Object.fromEntries(Object.entries(envFirebaseConfig).filter(([, value]) => value)),
-};
+// Important: avoid mixing partial env config with fallback.
+// If env config is incomplete (e.g. apiKey set but authDomain missing), using a hybrid config
+// can lead to confusing auth issues. In that case we use fallback config entirely.
+const hasCompleteEnvConfig = Boolean(
+  envFirebaseConfig.apiKey &&
+    envFirebaseConfig.authDomain &&
+    envFirebaseConfig.projectId &&
+    envFirebaseConfig.appId
+);
+
+const firebaseConfig = hasCompleteEnvConfig
+  ? {
+      ...fallbackFirebaseConfig,
+      ...Object.fromEntries(Object.entries(envFirebaseConfig).filter(([, value]) => value)),
+    }
+  : fallbackFirebaseConfig;
 
 // DEBUG: Log env availability (not secrets).
 if (typeof window !== 'undefined') {
@@ -38,6 +49,8 @@ if (typeof window !== 'undefined') {
       : '✗ NOT SET (using fallback)',
     projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID ? '✓ SET' : '✗ NOT SET (using fallback)',
   });
+
+  console.log('🔐 Firebase Config source:', hasCompleteEnvConfig ? 'env' : 'fallback');
 }
 
 const isConfigured = Boolean(
@@ -55,9 +68,11 @@ if (!isConfigured) {
   );
 }
 
-console.log('Firebase Config:', {
-  ...firebaseConfig,
+console.log('Firebase Config (effective):', {
   apiKey: firebaseConfig.apiKey ? '✓ SET' : '✗ NOT SET',
+  authDomain: firebaseConfig.authDomain,
+  projectId: firebaseConfig.projectId,
+  appId: firebaseConfig.appId ? '✓ SET' : '✗ NOT SET',
 });
 
 let app;
