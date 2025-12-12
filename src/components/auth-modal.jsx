@@ -3,8 +3,6 @@ import { useState } from 'react';
 import { useLanguage } from '../contexts/language-context';
 import {
   signInWithPopup,
-  signInWithRedirect,
-  getRedirectResult,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   updateProfile,
@@ -112,26 +110,12 @@ export function AuthModal({ isOpen, onClose }) {
     }
 
     try {
-      // Check if we're coming back from redirect
-      const redirectResult = await getRedirectResult(auth);
-      if (redirectResult?.user) {
-        console.log('Redirect auth success:', redirectResult.user);
-        alert(
-          `${t.loginSuccess || 'Успішний вхід!'}\nВітаємо, ${
-            redirectResult.user.displayName || redirectResult.user.email
-          }!`
-        );
-        onClose();
-        setLoading(false);
-        return;
-      }
-
-      // Try popup first (works on localhost and GitHub Pages)
+      // Use popup only (no redirect)
       console.log('🔐 Starting Google Popup Auth...');
       console.log('Auth instance:', auth);
       console.log('Auth app name:', auth.app.name);
       console.log('Auth config:', auth.app.options);
-      
+
       const result = await signInWithPopup(auth, googleProvider);
       console.log('Google auth success:', result.user);
       alert(
