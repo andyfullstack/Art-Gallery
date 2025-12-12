@@ -142,6 +142,9 @@ export function AuthModal({ isOpen, onClose }) {
       onClose();
     } catch (err) {
       console.error('Google auth error:', err);
+      console.error('Error code:', err.code);
+      console.error('Error message:', err.message);
+      console.error('Full error object:', JSON.stringify(err, null, 2));
       if (err.code === 'auth/popup-closed-by-user') {
         setError('Вікно авторизації було закрито');
       } else if (err.code === 'auth/configuration-not-found') {
