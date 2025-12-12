@@ -7,7 +7,7 @@ import {
   signInWithEmailAndPassword,
   updateProfile,
 } from 'firebase/auth';
-import { auth, googleProvider, isConfigured } from '../firebase/config';
+import { auth, googleProvider } from '../firebase/config';
 
 export function AuthModal({ isOpen, onClose }) {
   const { t } = useLanguage();
@@ -28,7 +28,7 @@ export function AuthModal({ isOpen, onClose }) {
     setError('');
     setLoading(true);
 
-    if (!auth || !isConfigured) {
+    if (!auth) {
       setError('Firebase не налаштовано. Перегляньте QUICKSTART_AUTH.md');
       setLoading(false);
       return;
@@ -101,7 +101,7 @@ export function AuthModal({ isOpen, onClose }) {
     setError('');
     setLoading(true);
 
-    if (!auth || !googleProvider || !isConfigured) {
+    if (!auth || !googleProvider) {
       setError(
         'Firebase не налаштовано. Створіть файл .env.local (див. QUICKSTART_AUTH.md)'
       );
@@ -110,7 +110,7 @@ export function AuthModal({ isOpen, onClose }) {
     }
 
     try {
-      // Use popup only (no redirect)
+      // Popup-only auth (works on localhost and GitHub Pages)
       console.log('🔐 Starting Google Popup Auth...');
       console.log('Auth instance:', auth);
       console.log('Auth app name:', auth.app.name);
@@ -144,6 +144,7 @@ export function AuthModal({ isOpen, onClose }) {
       } else {
         setError(err.message || 'Помилка авторизації через Google');
       }
+    } finally {
       setLoading(false);
     }
   };
