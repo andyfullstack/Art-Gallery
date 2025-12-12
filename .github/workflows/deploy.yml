@@ -3,6 +3,10 @@ name: Build and deploy to GitHub Pages
 on:
   push:
     branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   build-and-deploy:
@@ -17,6 +21,13 @@ jobs:
           npm install --no-save
           npm run lint:js
           npm run build
+
+      - name: Sanity check build output 🔎
+        run: |
+          if grep -R "demo.firebaseapp.com" -n build; then
+            echo "ERROR: demo.firebaseapp.com found in build output"
+            exit 1
+          fi
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@4.1.0
