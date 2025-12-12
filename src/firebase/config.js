@@ -13,7 +13,8 @@ const firebaseConfig = {
 
 // DEBUG: Логирование для проверки
 if (typeof window !== 'undefined') {
-  console.log('🔐 Firebase Config:', {
+  const buildTime = new Date().toISOString();
+  console.log('🔐 Firebase Config (Built: ' + buildTime + '):', {
     apiKey: firebaseConfig.apiKey ? '✓ SET' : '✗ NOT SET',
     authDomain: firebaseConfig.authDomain ? '✓ SET' : '✗ NOT SET',
     projectId: firebaseConfig.projectId ? '✓ SET' : '✗ NOT SET',
