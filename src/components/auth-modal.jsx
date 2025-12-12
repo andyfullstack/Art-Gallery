@@ -2,7 +2,8 @@ import { X } from 'lucide-react';
 import { useState } from 'react';
 import { useLanguage } from '../contexts/language-context';
 import {
-  signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   updateProfile,
@@ -110,14 +111,22 @@ export function AuthModal({ isOpen, onClose }) {
     }
 
     try {
-      const result = await signInWithPopup(auth, googleProvider);
-      console.log('Google auth success:', result.user);
-      alert(
-        `${t.loginSuccess || 'Успішний вхід!'}\nВітаємо, ${
-          result.user.displayName || result.user.email
-        }!`
-      );
-      onClose();
+      // Check for redirect result first
+      const result = await getRedirectResult(auth);
+      if (result?.user) {
+        console.log('Redirect auth success:', result.user);
+        alert(
+          `${t.loginSuccess || 'Успішний вхід!'}\nВітаємо, ${
+            result.user.displayName || result.user.email
+          }!`
+        );
+        onClose();
+        setLoading(false);
+        return;
+      }
+
+      // Redirect to Google login
+      await signInWithRedirect(auth, googleProvider);
     } catch (err) {
       console.error('Google auth error:', err);
       if (err.code === 'auth/popup-closed-by-user') {
@@ -126,10 +135,11 @@ export function AuthModal({ isOpen, onClose }) {
         setError(
           'Firebase не налаштовано. Перегляньте FIREBASE_SETUP.md для інструкцій'
         );
+      } else if (err.code === 'auth/operation-not-supported-in-this-environment') {
+        setError('Редирект авторизація не підтримується. Спробуйте Email/Password');
       } else {
         setError(err.message || 'Помилка авторизації через Google');
       }
-    } finally {
       setLoading(false);
     }
   };
