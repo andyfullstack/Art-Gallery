@@ -1,9 +1,12 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider } from 'firebase/auth';
 
+// Detect if running on GitHub Pages
+const isGitHubPages = typeof window !== 'undefined' && window.location.hostname.includes('github.io');
+
 const firebaseConfig = {
   apiKey: 'AIzaSyBslNP5qKeHKEsLqPY3WClqQ3Jd9OENpk4',
-  authDomain: 'gallery-94c7a.firebaseapp.com',
+  authDomain: isGitHubPages ? 'andyfullstack.github.io' : 'gallery-94c7a.firebaseapp.com',
   projectId: 'gallery-94c7a',
   storageBucket: 'gallery-94c7a.firebasestorage.app',
   messagingSenderId: '554228724926',
