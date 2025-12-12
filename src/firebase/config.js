@@ -14,10 +14,12 @@ const firebaseConfig = {
 // DEBUG: Логирование для проверки
 if (typeof window !== 'undefined') {
   console.log('🔐 Firebase Config:', {
-    apiKey: firebaseConfig.apiKey && firebaseConfig.apiKey !== 'demo-api-key' ? '✓ SET' : '✗ NOT SET',
-    authDomain: firebaseConfig.authDomain && firebaseConfig.authDomain !== 'demo' ? '✓ SET' : '✗ NOT SET',
-    projectId: firebaseConfig.projectId && firebaseConfig.projectId !== 'demo-project' ? '✓ SET' : '✗ NOT SET',
+    apiKey: firebaseConfig.apiKey ? '✓ SET' : '✗ NOT SET',
+    authDomain: firebaseConfig.authDomain ? '✓ SET' : '✗ NOT SET',
+    projectId: firebaseConfig.projectId ? '✓ SET' : '✗ NOT SET',
     actualAuthDomain: firebaseConfig.authDomain,
+    configType: typeof firebaseConfig.authDomain,
+    configLength: firebaseConfig.authDomain?.length,
   });
 }
 
