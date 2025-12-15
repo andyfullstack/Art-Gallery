@@ -1,5 +1,5 @@
 import { X } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLanguage } from '../contexts/language-context';
 import {
   signInWithPopup,
@@ -14,6 +14,7 @@ export function AuthModal({ isOpen, onClose }) {
   const [mode, setMode] = useState('login');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -21,11 +22,19 @@ export function AuthModal({ isOpen, onClose }) {
     fullName: '',
   });
 
+  useEffect(() => {
+    if (isOpen) {
+      setError('');
+      setSuccess('');
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   const handleSubmit = async e => {
     e.preventDefault();
     setError('');
+    setSuccess('');
     setLoading(true);
 
     if (!auth) {
@@ -53,21 +62,27 @@ export function AuthModal({ isOpen, onClose }) {
             displayName: formData.fullName,
           });
         }
+
+        setSuccess(t.registerSuccess || 'Реєстрація успішна!');
       } else {
         await signInWithEmailAndPassword(
           auth,
           formData.email,
           formData.password
         );
-      }
 
-      onClose();
+        setSuccess(t.loginSuccess || 'Успішний вхід!');
+      }
       setFormData({
         email: '',
         password: '',
         confirmPassword: '',
         fullName: '',
       });
+
+      setTimeout(() => {
+        onClose();
+      }, 800);
     } catch (err) {
       console.error('Auth error:', err);
       switch (err.code) {
@@ -96,6 +111,7 @@ export function AuthModal({ isOpen, onClose }) {
 
   const handleGoogleAuth = async () => {
     setError('');
+    setSuccess('');
     setLoading(true);
 
     if (!auth || !googleProvider) {
@@ -115,7 +131,15 @@ export function AuthModal({ isOpen, onClose }) {
 
       const result = await signInWithPopup(auth, googleProvider);
       console.log('Google auth success:', result.user);
-      onClose();
+      setSuccess(
+        `${t.loginSuccess || 'Успішний вхід!'} ${t.welcome || 'Вітаємо'}, ${
+          result.user.displayName || result.user.email
+        }!`
+      );
+
+      setTimeout(() => {
+        onClose();
+      }, 800);
     } catch (err) {
       console.error('Google auth error:', err);
       console.error('Error code:', err.code);
@@ -168,6 +192,12 @@ export function AuthModal({ isOpen, onClose }) {
           {error && (
             <div className="mb-4 p-3 bg-red-100 dark:bg-red-900/30 border border-red-400 dark:border-red-700 text-red-700 dark:text-red-300 rounded-lg text-sm">
               {error}
+            </div>
+          )}
+
+          {success && (
+            <div className="mb-4 p-3 bg-green-100 dark:bg-green-900/30 border border-green-400 dark:border-green-700 text-green-800 dark:text-green-200 rounded-lg text-sm">
+              {success}
             </div>
           )}
 
