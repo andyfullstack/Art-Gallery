@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/Art-Gallery/static/css/main.53b2d583.css",
-    "main.js": "/Art-Gallery/static/js/main.b05dec89.js",
+    "main.css": "/Art-Gallery/static/css/main.a29fce0f.css",
+    "main.js": "/Art-Gallery/static/js/main.b47b3914.js",
     "static/media/rs.svg": "/Art-Gallery/static/media/rs.099fd9d4031b066a2362.svg",
     "static/media/sh-ac.svg": "/Art-Gallery/static/media/sh-ac.12e47249c910761e397d.svg",
     "static/media/bo.svg": "/Art-Gallery/static/media/bo.b0f50bc8035200c269f1.svg",
@@ -274,11 +274,11 @@
     "static/media/bd.svg": "/Art-Gallery/static/media/bd.0ad8c443ef4d47ea0497.svg",
     "static/media/pe.svg": "/Art-Gallery/static/media/pe.d64e9732fcaa8f765994.svg",
     "static/media/id.svg": "/Art-Gallery/static/media/id.f624e2c8444a7794b357.svg",
-    "main.53b2d583.css.map": "/Art-Gallery/static/css/main.53b2d583.css.map",
-    "main.b05dec89.js.map": "/Art-Gallery/static/js/main.b05dec89.js.map"
+    "main.a29fce0f.css.map": "/Art-Gallery/static/css/main.a29fce0f.css.map",
+    "main.b47b3914.js.map": "/Art-Gallery/static/js/main.b47b3914.js.map"
   },
   "entrypoints": [
-    "static/css/main.53b2d583.css",
-    "static/js/main.b05dec89.js"
+    "static/css/main.a29fce0f.css",
+    "static/js/main.b47b3914.js"
   ]
 }
